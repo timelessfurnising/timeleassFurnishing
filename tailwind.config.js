@@ -1,0 +1,61 @@
+const colors = require("tailwindcss/colors");
+module.exports = {
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/layout/**/*.{js,ts,jsx,tsx}",
+  ],
+
+  theme: {
+    fontFamily: {
+      sans: ["Open Sans", "sans-serif"],
+      serif: ["Inter", "sans-serif"],
+      DejaVu: ["DejaVu Sans", "Arial", "sans-serif"],
+      montserrat: ["Montserrat", "sans-serif"],
+    },
+    extend: {
+      height: {
+        header: "560px",
+      },
+      colors: {
+        customPink: "#2C3335",
+        customPinkDark: "#333945",
+      },
+      backgroundImage: {
+        "page-header": "url('/page-header-bg.jpg')",
+        "contact-header": "url('/page-header-bg-2.jpg')",
+        subscribe: "url('/subscribe-bg.jpg')",
+        "app-download": "url('/app-download.jpg')",
+        cta: "url('/cta-bg.png')",
+        "cta-1": "url('/cta/cta-bg-1.png')",
+        "cta-2": "url('/cta/cta-bg-2.png')",
+        "cta-3": "url('/cta/cta-bg-3.png')",
+      },
+    },
+  },
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/aspect-ratio"),
+    function ({ addComponents }) {
+      addComponents({
+        ".underline-hover": {
+          position: "relative",
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            bottom: "-4px",
+            left: "0",
+            height: "2px",
+            width: "0",
+            backgroundColor: "currentColor",
+            transition: "width 0.3s ease",
+          },
+          "&:hover::after": {
+            width: "100%",
+          },
+        },
+      });
+    },
+  ],
+};
