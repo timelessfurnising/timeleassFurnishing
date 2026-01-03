@@ -4,10 +4,20 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
+    let setting = null;
+    let ogsetting = null;
 
-    // Fetch general metadata from backend API
-    const setting = await SettingServices.getStoreSeoSetting();
-    const ogsetting = await SettingServices.getStoreOgSetting();
+    // Avoid failing the build if the API is unreachable during prerendering
+    if (process.env.NEXT_PUBLIC_API_BASE_URL) {
+      try {
+        [setting, ogsetting] = await Promise.all([
+          SettingServices.getStoreSeoSetting(),
+          SettingServices.getStoreOgSetting(),
+        ]);
+      } catch (error) {
+        console.error("Failed to load store SEO/OG settings", error?.message);
+      }
+    }
 
     return { ...initialProps, setting, ogsetting };
   }
